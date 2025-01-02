@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const SectionsWithLessons = () => {
   const [sections, setSections] = useState([]);
-  const [progress, setProgress] = useState([]);
+  const [, setProgress] = useState([]);
   const [completedLessons, setCompletedLessons] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
