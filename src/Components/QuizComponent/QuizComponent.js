@@ -11,7 +11,7 @@ const QuizComponent = () => {
   const [quizData, setQuizData] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [setQuestionsAttempted] = useState(0);
+  const [questionsAttempted, setQuestionsAttempted] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [xpGained, setXpGained] = useState(0);
   const [newLevel, setNewLevel] = useState(null);
@@ -22,11 +22,12 @@ const QuizComponent = () => {
 
   const formattedQuizId = String(quizId);
 
-  // Fetch Quiz Data
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const response = await fetch(`https://fluentwave-backend-beta.onrender.com/api/quiz-completion/${formattedQuizId}`);
+        const response = await fetch(
+          `https://fluentwave-backend-beta.onrender.com/api/quiz-completion/${formattedQuizId}`
+        );
         if (!response.ok) throw new Error('Failed to fetch quiz data');
         const data = await response.json();
 
@@ -44,13 +45,7 @@ const QuizComponent = () => {
             q.questionType !== 'wordLearning'
         );
 
-        console.log('Word Introduction Questions:', wordIntroQuestions);
-        console.log('Word Learning Questions:', wordLearningQuestions);
-        console.log('Other Questions (before shuffle):', otherQuestions);
-
         const shuffledOtherQuestions = otherQuestions.sort(() => Math.random() - 0.5);
-
-        console.log('Shuffled Other Questions:', shuffledOtherQuestions);
 
         data.questions = [
           ...wordIntroQuestions,
@@ -58,20 +53,16 @@ const QuizComponent = () => {
           ...shuffledOtherQuestions,
         ];
 
-        console.log('Final Question Order:', data.questions);
-
         setQuizData(data);
         setLoading(false);
       } catch (error) {
-        setError(error.message);
+        setError(error.message || 'Failed to load quiz.');
         setLoading(false);
-        console.error('Error fetching quiz:', error);
       }
     };
     fetchQuiz();
   }, [formattedQuizId]);
 
-  // Handle Correct / Incorrect Answers
   const handleAnswer = (isCorrect) => {
     setIsAnswered(true);
     setButtonColor(isCorrect ? 'bg-green-500' : 'bg-red-500');
@@ -79,11 +70,9 @@ const QuizComponent = () => {
     if (isCorrect) {
       setScore((prevScore) => prevScore + 1);
     }
-
     setQuestionsAttempted((prevCount) => prevCount + 1);
   };
 
-  // Continue to Next Question
   const handleContinue = () => {
     setIsAnswered(false);
     setButtonColor('bg-gray-300');
@@ -95,38 +84,40 @@ const QuizComponent = () => {
     }
   };
 
-  // Submit Quiz Completion to Backend
   const handleQuizCompletion = async () => {
     try {
-      const userId = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null;
-      const lessonId = quizData.lessonId?._id || quizData.lessonId;  // Ensure lessonId is properly formatted
+      const userId = localStorage.getItem('user')
+        ? JSON.parse(localStorage.getItem('user')).id
+        : null;
+      const lessonId = quizData.lessonId?._id || quizData.lessonId;
 
       console.log('Submitting Quiz Completion:', { userId, lessonId, score });
 
-      const response = await fetch(`https://fluentwave-backend-beta.onrender.com/api/quiz-completion/${formattedQuizId}/complete`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId,
-          lessonId,
-          score,
-          totalQuestions: quizData.questions.length,
-        }),
-      });
+      const response = await fetch(
+        `https://fluentwave-backend-beta.onrender.com/api/quiz-completion/${formattedQuizId}/complete`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId,
+            lessonId,
+            score,
+            totalQuestions: quizData.questions.length,
+          }),
+        }
+      );
 
       if (!response.ok) throw new Error('Failed to complete quiz');
       const data = await response.json();
-
-      console.log('Quiz Completion Response:', data);
 
       setXpGained(data.xpGained);
       setNewLevel(data.level);
       setQuizCompleted(true);
     } catch (error) {
       console.error('Error completing quiz:', error);
-      setError('Could not complete quiz. Please try again later.');
+      setError('Could not complete quiz. Please try again.');
     }
   };
 
@@ -136,14 +127,13 @@ const QuizComponent = () => {
 
   const currentQuestion = quizData.questions[currentQuestionIndex];
 
-  // Render Appropriate Question Component
   const renderQuestionComponent = () => {
     switch (currentQuestion.questionType) {
       case 'wordIntroduction':
         return (
           <WordIntroductionComponent
             question={currentQuestion}
-            onAnswer={() => handleAnswer(true)}  // Always correct for introduction
+            onAnswer={() => handleAnswer(true)} // Always correct for introduction
           />
         );
       case 'wordLearning':
@@ -159,7 +149,12 @@ const QuizComponent = () => {
           />
         );
       case 'matching':
-        return <MatchingWordsComponent question={currentQuestion} onAnswer={handleAnswer} />;
+        return (
+          <MatchingWordsComponent
+            question={currentQuestion}
+            onAnswer={handleAnswer}
+          />
+        );
       default:
         return <div>Unknown question type</div>;
     }
