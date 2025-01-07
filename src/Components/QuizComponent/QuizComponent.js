@@ -128,23 +128,31 @@ const QuizComponent = () => {
   const currentQuestion = quizData.questions[currentQuestionIndex];
 
   const renderQuestionComponent = () => {
+    const safeOnAnswer = (isCorrect) => {
+      if (typeof handleAnswer === 'function') {
+        handleAnswer(isCorrect);
+      } else {
+        console.error('handleAnswer is not a function.');
+      }
+    };
+
     switch (currentQuestion.questionType) {
       case 'wordIntroduction':
         return (
           <WordIntroductionComponent
             question={currentQuestion}
-            onAnswer={() => handleAnswer(true)} // Always correct for introduction
+            onAnswer={() => safeOnAnswer(true)} // Always correct for introduction
           />
         );
       case 'wordLearning':
-        return <WordLearningComponent question={currentQuestion} onAnswer={handleAnswer} />;
+        return <WordLearningComponent question={currentQuestion} onAnswer={safeOnAnswer} />;
       case 'sentenceUse':
-        return <SentenceUseComponent question={currentQuestion} onAnswer={handleAnswer} />;
+        return <SentenceUseComponent question={currentQuestion} onAnswer={safeOnAnswer} />;
       case 'multipleChoice':
         return (
           <RegularQuestionComponent
             question={currentQuestion}
-            onAnswer={handleAnswer}
+            onAnswer={safeOnAnswer}
             key={currentQuestionIndex}
           />
         );
@@ -152,7 +160,7 @@ const QuizComponent = () => {
         return (
           <MatchingWordsComponent
             question={currentQuestion}
-            onAnswer={handleAnswer}
+            onAnswer={safeOnAnswer}
           />
         );
       default:
@@ -177,9 +185,7 @@ const QuizComponent = () => {
             <button
               onClick={handleContinue}
               disabled={!isAnswered}
-              className={`px-6 py-3 rounded-lg text-lg ${buttonColor} ${
-                isAnswered ? 'text-white' : 'text-gray-300 cursor-not-allowed'
-              }`}
+              className={`px-6 py-3 rounded-lg text-lg ${buttonColor}`}
             >
               Continue
             </button>
@@ -190,6 +196,7 @@ const QuizComponent = () => {
           <h2 className="text-4xl font-bold text-green-500 mb-4">🎉 Quiz Complete!</h2>
           <p className="text-6xl font-extrabold">{quizCompletionPercentage}%</p>
           <p className="text-lg mt-4">XP Gained: <span className="font-semibold">{xpGained}</span></p>
+          <p className="text-lg">Score: <span className="font-semibold">{score}</span></p>
           <p className="text-lg">Current Level: <span className="font-semibold">{newLevel}</span></p>
         </div>
       )}

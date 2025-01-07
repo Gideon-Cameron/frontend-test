@@ -1,4 +1,3 @@
-// MatchingWordsComponent.js
 import React, { useState, useEffect } from 'react';
 
 // Helper function to shuffle an array
@@ -11,15 +10,14 @@ const MatchingWordsComponent = ({ question, onAnswer }) => {
   const [matchedPairs, setMatchedPairs] = useState([]);
   const [shuffledAmharicWords, setShuffledAmharicWords] = useState([]);
   const [shuffledEnglishWords, setShuffledEnglishWords] = useState([]);
-  const [isCompleted, setIsCompleted] = useState(false); // Track completion to prevent duplicate onAnswer calls
+  const [isCompleted, setIsCompleted] = useState(false); // Prevent duplicate onAnswer calls
 
   useEffect(() => {
-    // Shuffle words and reset state when the question changes
     setShuffledAmharicWords(shuffleArray([...question.options.map((pair) => pair.Amharic)]));
     setShuffledEnglishWords(shuffleArray([...question.options.map((pair) => pair.English)]));
-    setMatchedPairs([]); // Clear matched pairs for the new question
-    setSelectedPair({ amharic: null, english: null }); // Clear any current selection
-    setIsCompleted(false); // Reset completion state
+    setMatchedPairs([]);
+    setSelectedPair({ amharic: null, english: null });
+    setIsCompleted(false);
   }, [question]);
 
   const handleSelection = (word, type) => {
@@ -35,15 +33,19 @@ const MatchingWordsComponent = ({ question, onAnswer }) => {
         setMatchedPairs((prev) => [...prev, correctPair.Amharic, correctPair.English]);
       }
 
-      setSelectedPair({ amharic: null, english: null }); // Reset the selection after each attempt
+      setSelectedPair({ amharic: null, english: null });
     }
   };
 
-  // Check if all pairs are matched and trigger onAnswer to show the continue button
   useEffect(() => {
+    // Trigger onAnswer only if it is a valid function
     if (matchedPairs.length === question.options.length * 2 && !isCompleted) {
-      setIsCompleted(true); // Mark as completed to prevent duplicate calls
-      onAnswer(true); // Signal completion of the question
+      setIsCompleted(true);
+      if (typeof onAnswer === 'function') {
+        onAnswer(true);  // Call onAnswer if it's defined and a function
+      } else {
+        console.error('onAnswer is not a function or undefined.');
+      }
     }
   }, [matchedPairs, question.options.length, onAnswer, isCompleted]);
 
