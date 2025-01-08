@@ -26,25 +26,34 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    const cachedUser = localStorage.getItem('cachedUser');
+
+    if (cachedUser) {
+      setUser(JSON.parse(cachedUser));
+      setLoading(false);
+    }
+
     const fetchUserData = async () => {
       const token = localStorage.getItem('token');
-      
       if (!token) {
-        setLoading(false);  // Stop loading and show default view
+        setLoading(false);
         return;
       }
 
       try {
-        const response = await axios.get('https://fluentwave-backend-beta.onrender.com/api/users/profile', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get(
+          'https://fluentwave-backend-beta.onrender.com/api/users/profile',
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
 
         const userData = response.data.data;
         const levelInfo = calculateLevel(userData.totalXp);
+        const updatedUser = { ...userData, ...levelInfo };
 
-        setUser({ ...userData, ...levelInfo });
+        setUser(updatedUser);
+        localStorage.setItem('cachedUser', JSON.stringify(updatedUser));
       } catch (err) {
-        setError('Failed to load user data. Please try again.');
+        setError('Failed to load user data.');
       } finally {
         setLoading(false);
       }
@@ -53,50 +62,51 @@ const Dashboard = () => {
     fetchUserData();
   }, []);
 
+  // Skeleton Loader during loading
   if (loading) {
     return (
       <div className="p-6 bg-gray-100 min-h-screen md:pl-64 flex justify-center items-center">
-        <div>Loading dashboard...</div>
-      </div>
-    );
-  }
-
-  if (error && user) {
-    return (
-      <div className="p-6 bg-gray-100 min-h-screen md:pl-64 flex justify-center items-center">
-        <div>
-          <p className="text-red-500">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-          >
-            Retry
-          </button>
+        <div className="max-w-4xl w-full animate-pulse">
+          <div className="h-12 bg-gray-300 rounded mb-6"></div>
+          <div className="h-40 bg-gray-300 rounded mb-6"></div>
+          <div className="h-10 bg-gray-300 rounded"></div>
         </div>
       </div>
     );
   }
 
-  if (!user) {
+  // Error or No User (Display Default)
+  if (!user || error) {
     return (
       <div className="p-6 bg-gray-100 min-h-screen md:pl-64 flex justify-center items-center">
         <div className="text-center max-w-3xl">
           <h1 className="text-4xl font-bold mb-6">Welcome to Fluentwave!</h1>
           <p className="text-lg mb-6">
-            Start your journey to learning Amharic. Access engaging lessons,
-            interactive quizzes, and track your progress as you learn.
+            Start your journey to learning Amharic. Track your progress, gain XP, and level up.
           </p>
+          {error && (
+            <p className="text-red-500 mb-4">Could not load your profile. Please try logging in again.</p>
+          )}
           <div className="flex justify-center space-x-6">
             <Link to="/login">
               <button className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-500 transition">
-                Sign Up
-              </button>
-            </Link>
-            <Link to="/login">
-              <button className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-400 transition">
                 Log In
               </button>
             </Link>
+            <Link to="/signup">
+              <button className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-400 transition">
+                Sign Up
+              </button>
+            </Link>
+          </div>
+
+          <div className="mt-12">
+            <h2 className="text-2xl font-semibold mb-4">Guest Progress</h2>
+            <div className="bg-white shadow-md rounded-lg p-6">
+              <p className="text-lg mb-2">XP: 0</p>
+              <p className="text-lg mb-2">Level: 1</p>
+              <p className="text-lg mb-2">XP to Next Level: 100</p>
+            </div>
           </div>
         </div>
       </div>
