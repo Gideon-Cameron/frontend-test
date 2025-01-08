@@ -11,7 +11,7 @@ const QuizComponent = () => {
   const [quizData, setQuizData] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [questionsAttempted, setQuestionsAttempted] = useState(0);
+  const [setQuestionsAttempted] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [xpGained, setXpGained] = useState(0);
   const [newLevel, setNewLevel] = useState(null);
