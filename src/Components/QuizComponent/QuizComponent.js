@@ -11,7 +11,7 @@ const QuizComponent = () => {
   const [quizData, setQuizData] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [setQuestionsAttempted] = useState(0);
+  const [, setQuestionsAttempted] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [xpGained, setXpGained] = useState(0);
   const [newLevel, setNewLevel] = useState(null);
@@ -182,10 +182,12 @@ const QuizComponent = () => {
           </p>
           {renderQuestionComponent()}
           <div className="flex justify-between mt-8 w-full">
-            <button
+          <button
               onClick={handleContinue}
               disabled={!isAnswered}
-              className={`px-6 py-3 rounded-lg text-lg ${buttonColor}`}
+              className={`px-6 py-3 rounded-lg text-lg ${buttonColor} ${
+                isAnswered ? 'text-white' : 'text-gray-300 cursor-not-allowed'
+              }`}
             >
               Continue
             </button>

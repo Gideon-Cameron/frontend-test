@@ -5,7 +5,7 @@ const shuffleArray = (array) => {
   return array.sort(() => Math.random() - 0.5);
 };
 
-const MatchingWordsComponent = ({ question, onAnswer }) => {
+const MatchingWordsComponent = ({ question, onAnswer = () => {} }) => {
   const [selectedPair, setSelectedPair] = useState({ amharic: null, english: null });
   const [matchedPairs, setMatchedPairs] = useState([]);
   const [shuffledAmharicWords, setShuffledAmharicWords] = useState([]);
@@ -41,11 +41,7 @@ const MatchingWordsComponent = ({ question, onAnswer }) => {
     // Trigger onAnswer only if it is a valid function
     if (matchedPairs.length === question.options.length * 2 && !isCompleted) {
       setIsCompleted(true);
-      if (typeof onAnswer === 'function') {
-        onAnswer(true);  // Call onAnswer if it's defined and a function
-      } else {
-        console.error('onAnswer is not a function or undefined.');
-      }
+      onAnswer(true);  // Safe to call as it defaults to an empty function
     }
   }, [matchedPairs, question.options.length, onAnswer, isCompleted]);
 
