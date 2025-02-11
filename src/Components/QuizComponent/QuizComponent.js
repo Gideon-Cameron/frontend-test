@@ -133,7 +133,6 @@ const QuizComponent = () => {
     }
   };
 
-
   if (loading) return <div>Loading quiz...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!quizData) return <div>No quiz data available</div>;
