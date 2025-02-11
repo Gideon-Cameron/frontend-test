@@ -19,6 +19,8 @@ const QuizComponent = () => {
   const [error, setError] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [buttonColor, setButtonColor] = useState('bg-gray-300');
+  const [completionMessage, setCompletionMessage] = useState('');
+  const [retryMessage, setRetryMessage] = useState('');
 
   const formattedQuizId = String(quizId);
 
@@ -119,10 +121,41 @@ const QuizComponent = () => {
       setXpGained(data.xpGained);
       setNewLevel(data.level);
       setQuizCompleted(true);
+
+      // Set completion message
+      if (scorePercentage >= 70) {
+        setCompletionMessage('🎉 Lesson completed! Good job!');
+      } else {
+        setCompletionMessage('Lesson incompleted. Better luck next time!');
+      }
     } catch (error) {
       console.error('Error completing quiz:', error);
       setError('Could not complete quiz. Please try again.');
     }
+  };
+
+  const renderButtons = () => {
+    if (quizCompleted) {
+      const scorePercentage = (score / quizData.questions.length) * 100;
+      if (scorePercentage >= 70) {
+        // If the lesson was completed (70% or more)
+        return (
+          <div>
+            <button onClick={() => {/* Handle navigation to lessons */}}>Back to Lessons</button>
+            <button onClick={() => {/* Handle navigation to next lesson */}}>Next Lesson</button>
+          </div>
+        );
+      } else {
+        // If the lesson was not completed (less than 70%)
+        return (
+          <div>
+            <button onClick={() => {/* Handle navigation to lessons */}}>Back to Lessons</button>
+            <button onClick={() => {/* Handle retrying the lesson */}}>Retry Lesson</button>
+          </div>
+        );
+      }
+    }
+    return null;
   };
 
   if (loading) return <div>Loading quiz...</div>;
@@ -130,49 +163,6 @@ const QuizComponent = () => {
   if (!quizData) return <div>No quiz data available</div>;
 
   const currentQuestion = quizData.questions[currentQuestionIndex];
-
-  const renderQuestionComponent = () => {
-    const safeOnAnswer = (isCorrect) => {
-      if (typeof handleAnswer === 'function') {
-        handleAnswer(isCorrect);
-      } else {
-        console.error('handleAnswer is not a function.');
-      }
-    };
-
-    switch (currentQuestion.questionType) {
-      case 'wordIntroduction':
-        return (
-          <WordIntroductionComponent
-            question={currentQuestion}
-            onAnswer={() => safeOnAnswer(true)} // Always correct for introduction
-          />
-        );
-      case 'wordLearning':
-        return <WordLearningComponent question={currentQuestion} onAnswer={safeOnAnswer} />;
-      case 'sentenceUse':
-        return <SentenceUseComponent question={currentQuestion} onAnswer={safeOnAnswer} />;
-      case 'multipleChoice':
-        return (
-          <RegularQuestionComponent
-            question={currentQuestion}
-            onAnswer={safeOnAnswer}
-            key={currentQuestionIndex}
-          />
-        );
-      case 'matching':
-        return (
-          <MatchingWordsComponent
-            question={currentQuestion}
-            onAnswer={safeOnAnswer}
-          />
-        );
-      default:
-        return <div>Unknown question type</div>;
-    }
-  };
-
-  const quizCompletionPercentage = Math.round((score / quizData.questions.length) * 100);
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen md:ml-60 flex flex-col items-center">
@@ -199,11 +189,12 @@ const QuizComponent = () => {
         </div>
       ) : (
         <div className="text-center bg-white p-8 rounded-lg shadow-lg max-w-lg">
-          <h2 className="text-4xl font-bold text-green-500 mb-4">🎉 Quiz Complete!</h2>
-          <p className="text-6xl font-extrabold">{quizCompletionPercentage}%</p>
+          <h2 className="text-4xl font-bold text-green-500 mb-4">{completionMessage}</h2>
+          <p className="text-6xl font-extrabold">{Math.round((score / quizData.questions.length) * 100)}%</p>
           <p className="text-lg mt-4">XP Gained: <span className="font-semibold">{xpGained}</span></p>
           <p className="text-lg">Score: <span className="font-semibold">{score}</span></p>
           <p className="text-lg">Current Level: <span className="font-semibold">{newLevel}</span></p>
+          {renderButtons()}
         </div>
       )}
     </div>
