@@ -215,7 +215,7 @@ const QuizComponent = () => {
           <p className="text-lg">Score: <span className="font-semibold">{score}</span></p>
           <p className="text-lg">Current Level: <span className="font-semibold">{newLevel}</span></p>
           <div className="mt-4 flex justify-center gap-4">
-            {scorePercentage >= 70 ? (
+            {quizCompletionPercentage >= 70 ? (
               <>
                 <button className="bg-blue-500 text-white py-2 px-6 rounded-lg">Back to Lessons</button>
                 <button className="bg-green-500 text-white py-2 px-6 rounded-lg">Next Lesson</button>
