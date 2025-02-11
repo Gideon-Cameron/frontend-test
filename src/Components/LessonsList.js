@@ -28,8 +28,8 @@ const SectionsWithLessons = () => {
     const fetchData = async () => {
       try {
         const [lessonResponse, progressResponse] = await Promise.all([
-          axios.get('https://fluentwave-backend-beta.onrender.com/api/lessons'),
-          axios.get('https://fluentwave-backend-beta.onrender.com/api/users/profile', {
+          axios.get('https://backend-test-8r7y.onrender.com/api/lessons'),
+          axios.get('https://backend-test-8r7y.onrender.com/api/users/profile', {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
           }),
         ]);

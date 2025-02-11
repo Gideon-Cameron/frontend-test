@@ -15,7 +15,7 @@ const Logout = () => {
       }
 
       try {
-        await axios.post('https://fluentwave-backend-beta.onrender.com/api/users/logout', null, {
+        await axios.post('https://backend-test-8r7y.onrender.com/api/users/logout', null, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

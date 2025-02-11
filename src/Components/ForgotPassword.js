@@ -9,7 +9,7 @@ const ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://fluentwave-backend-beta.onrender.com/api/users/forgot-password', { email });
+      const response = await axios.post('https://backend-test-8r7y.onrender.com/api/users/forgot-password', { email });
       setMessage(response.data.message);
       setError('');
     } catch (err) {

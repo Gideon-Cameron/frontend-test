@@ -17,11 +17,11 @@ const Leaderboard = () => {
           throw new Error('User is not authenticated. Please log in.');
         }
 
-        const leaderboardResponse = await axios.get('https://fluentwave-backend-beta.onrender.com/api/users/leaderboard', {
+        const leaderboardResponse = await axios.get('https://backend-test-8r7y.onrender.com/api/users/leaderboard', {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        const profileResponse = await axios.get('https://fluentwave-backend-beta.onrender.com/api/users/profile', {
+        const profileResponse = await axios.get('https://backend-test-8r7y.onrender.com/api/users/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -110,7 +110,7 @@ const LeaderboardUser = ({ user, isCurrentUser }) => {
       } rounded-lg`}
     >
       <img
-        src={user.avatar ? `https://fluentwave-backend-beta.onrender.com${user.avatar}` : 'https://via.placeholder.com/50'}
+        src={user.avatar ? `https://backend-test-8r7y.onrender.com${user.avatar}` : 'https://via.placeholder.com/50'}
         alt={`${user.name}'s avatar`}
         className="w-12 h-12 rounded-full mr-4"
       />

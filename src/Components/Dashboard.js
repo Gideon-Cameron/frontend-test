@@ -42,7 +42,7 @@ const Dashboard = () => {
 
       try {
         const response = await axios.get(
-          'https://fluentwave-backend-beta.onrender.com/api/users/profile',
+          'https://backend-test-8r7y.onrender.com/api/users/profile',
           { headers: { Authorization: `Bearer ${token}` } }
         );
 

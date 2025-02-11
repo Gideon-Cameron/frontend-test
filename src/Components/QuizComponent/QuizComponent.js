@@ -26,7 +26,7 @@ const QuizComponent = () => {
     const fetchQuiz = async () => {
       try {
         const response = await fetch(
-          `https://fluentwave-backend-beta.onrender.com/api/quiz-completion/${formattedQuizId}`
+          `https://backend-test-8r7y.onrender.com/api/quiz-completion/${formattedQuizId}`
         );
         if (!response.ok) throw new Error('Failed to fetch quiz data');
         const data = await response.json();
@@ -94,7 +94,7 @@ const QuizComponent = () => {
       console.log('Submitting Quiz Completion:', { userId, lessonId, score });
 
       const response = await fetch(
-        `https://fluentwave-backend-beta.onrender.com/api/quiz-completion/${formattedQuizId}/complete`,
+        `https://backend-test-8r7y.onrender.com/api/quiz-completion/${formattedQuizId}/complete`,
         {
           method: 'POST',
           headers: {

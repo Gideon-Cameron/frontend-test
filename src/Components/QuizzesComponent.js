@@ -22,7 +22,7 @@ const QuizzesComponent = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const response = await fetch(`https://fluentwave-backend-beta.onrender.com/api/quiz-completion/${formattedQuizId}`);
+        const response = await fetch(`https://backend-test-8r7y.onrender.com/api/quiz-completion/${formattedQuizId}`);
         if (!response.ok) throw new Error('Failed to fetch quiz data');
         const data = await response.json();
         setQuizData(data);
@@ -65,7 +65,7 @@ const QuizzesComponent = () => {
     const scorePercentage = Math.round((score / quizData.questions.length) * 100);
 
     try {
-      const response = await fetch(`https://fluentwave-backend-beta.onrender.com/api/quiz-completion/${formattedQuizId}/complete`, {
+      const response = await fetch(`https://backend-test-8r7y.onrender.com/api/quiz-completion/${formattedQuizId}/complete`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

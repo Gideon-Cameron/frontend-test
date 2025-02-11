@@ -44,7 +44,7 @@ const UserProfile = () => {
           throw new Error('Token is missing. Please log in again.');
         }
 
-        const response = await axios.get('https://fluentwave-backend-beta.onrender.com/api/users/profile', {
+        const response = await axios.get('https://backend-test-8r7y.onrender.com/api/users/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -103,7 +103,7 @@ const UserProfile = () => {
           <div className="flex flex-col items-center">
             <div className="relative w-32 h-32 mb-4">
               <img
-                src={user.avatar ? `https://fluentwave-backend-beta.onrender.com${user.avatar}` : 'https://via.placeholder.com/150'}
+                src={user.avatar ? `https://backend-test-8r7y.onrender.com${user.avatar}` : 'https://via.placeholder.com/150'}
                 alt="User Avatar"
                 className="w-full h-full object-cover rounded-full border border-gray-300"
               />

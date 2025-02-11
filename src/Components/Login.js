@@ -14,8 +14,8 @@ const Login = () => {
     e.preventDefault();
     try {
       const endpoint = isSignUp
-        ? 'https://fluentwave-backend-beta.onrender.com/api/users/register'
-        : 'https://fluentwave-backend-beta.onrender.com/api/users/login';
+        ? 'https://backend-test-8r7y.onrender.com/api/users/register'
+        : 'https://backend-test-8r7y.onrender.com/api/users/login';
 
       const payload = isSignUp
         ? { name, email, password } // Include name for sign-up
