@@ -95,7 +95,7 @@ const QuizComponent = () => {
       console.log('Submitting Quiz Completion:', { userId, lessonId, score });
 
       // Calculate percentage to check if the user scored 70% or more
-      const scorePercentage = (score / quizData.questions.length) * 100;
+      const scorePercentage = (score / quizData.questions.length) * 100;  // Add this line
 
       const response = await fetch(
         `https://backend-test-8r7y.onrender.com/api/quiz-completion/${formattedQuizId}/complete`,
@@ -132,6 +132,7 @@ const QuizComponent = () => {
       setError('Could not complete quiz. Please try again.');
     }
   };
+
 
   if (loading) return <div>Loading quiz...</div>;
   if (error) return <div>Error: {error}</div>;
