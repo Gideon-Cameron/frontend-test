@@ -53,5 +53,8 @@
       "@babel/plugin-proposal-private-methods",
       "@babel/plugin-proposal-private-property-in-object"
     ]
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
