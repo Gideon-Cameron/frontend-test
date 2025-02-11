@@ -93,6 +93,9 @@ const QuizComponent = () => {
 
       console.log('Submitting Quiz Completion:', { userId, lessonId, score });
 
+      // Calculate percentage to check if the user scored 70% or more
+      const scorePercentage = (score / quizData.questions.length) * 100;
+
       const response = await fetch(
         `https://backend-test-8r7y.onrender.com/api/quiz-completion/${formattedQuizId}/complete`,
         {
@@ -105,6 +108,7 @@ const QuizComponent = () => {
             lessonId,
             score,
             totalQuestions: quizData.questions.length,
+            scorePercentage, // Send the score percentage as well
           }),
         }
       );
@@ -182,7 +186,7 @@ const QuizComponent = () => {
           </p>
           {renderQuestionComponent()}
           <div className="flex justify-between mt-8 w-full">
-          <button
+            <button
               onClick={handleContinue}
               disabled={!isAnswered}
               className={`px-6 py-3 rounded-lg text-lg ${buttonColor} ${
