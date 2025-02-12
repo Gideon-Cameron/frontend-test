@@ -137,7 +137,7 @@ const Dashboard = () => {
         </div>
 
         <div className="mt-6 text-center">
-          <h2 className="text-2xl font-semibold mb-4">Continue Your Lesson</h2>
+          <h2 className="text-2xl font-semibold mb-4">Continue Your Lesson!</h2>
           <Link to="/lessons">
             <button className="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-500 transition">
               Continue Lesson
