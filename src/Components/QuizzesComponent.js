@@ -205,16 +205,21 @@ const QuizzesComponent = () => {
           <p className="text-lg mt-2">XP Gained: {xpGained}</p>
           <p className="text-lg mt-2">Total XP: {totalXP}</p>
           <div className="navigation-buttons flex justify-between mt-8 w-full max-w-md">
-            <button
-              onClick={() => navigate('/lessons')}
-              className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
-            >
-              Go Back to Lessons
+          <Link to="/lessons">
+            <button className="bg-blue-500 text-white py-2 px-6 rounded-lg">
+              Back to Lessons
             </button>
+          </Link>
             <Link to={`/quiz/${getNextLessonQuizId(quizData.lessonId)}`}>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500">
-                Continue to Next Lesson
-              </button>
+            <button
+               onClick={() => {
+                console.log('Next Lesson button clicked');
+          // Trigger the navigation for the next lesson (implement this based on your logic)
+               }}
+               className="bg-green-500 text-white py-2 px-6 rounded-lg"
+                >
+             Next Lesson
+          </button>
             </Link>
           </div>
         </div>
