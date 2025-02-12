@@ -210,7 +210,7 @@ const QuizzesComponent = () => {
           className="bg-blue-500 text-white py-2 px-6 rounded-lg"
           onClick={() => console.log('Back to Lessons button clicked')}
         >
-          Back to Lessons.
+          Go Back to Lessosn
         </button>
       </Link>
 
