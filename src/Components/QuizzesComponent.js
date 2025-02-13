@@ -205,7 +205,7 @@ const QuizzesComponent = () => {
           <p className="text-lg mt-2">XP Gained: {xpGained}</p>
           <p className="text-lg mt-2">Total XP: {totalXP}</p>
           <div className="navigation-buttons flex justify-between mt-8 w-full max-w-md">
-          <Link to="/lessons">
+          {/* <Link to="/lessons">
         <button
           className="bg-blue-500 text-white py-2 px-6 rounded-lg"
           onClick={() => console.log('Back to Lessons button clicked')}
@@ -221,7 +221,7 @@ const QuizzesComponent = () => {
         >
           Continue to Next Lesson
         </button>
-      </Link>
+      </Link> */}
           </div>
         </div>
       )}
